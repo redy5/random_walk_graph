@@ -11,9 +11,6 @@ public class Main {
 		System.out.println("Welcome!");
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		Graph g = Graph.regularGraph(14, 3);
-		g.visualise();
 
 		while (true) {
 			// INPUT
@@ -24,7 +21,8 @@ public class Main {
 			System.out.println("4) Predator-Prey.");
 			System.out.println("5) Annihilating particles.");
 			System.out.println("6) Coalescing particles.");
-			System.out.println("7) Exit.");
+			System.out.println("7) Visualise.");
+			System.out.println("8) Exit.");
 
 			int answer = 0;
 			try {
@@ -32,7 +30,7 @@ public class Main {
 			} catch (NumberFormatException e) {
 			} catch (IOException e) {
 			}
-			if (answer == 7)
+			if (answer == 8)
 				break;
 
 			int V = 0;
@@ -48,6 +46,12 @@ public class Main {
 				V = Integer.parseInt(br.readLine());
 				System.out.println("Enter r:");
 				r = Integer.parseInt(br.readLine());
+				if (answer == 7) {
+					Graph g = Graph.regularGraph(V, r);
+					g.visualise();
+					break;
+				}
+
 				if (answer != 1) {
 					System.out.println("Enter number of k particles:");
 					k = Integer.parseInt(br.readLine());
@@ -66,7 +70,7 @@ public class Main {
 
 			// PRECALCULATIONS
 			double theta = (double) (r - 1) / (double) (r - 2);
-			
+
 			if (answer == 1)
 				predicted_result = theta * V * Math.log(V);
 			if (answer == 2)
@@ -97,25 +101,38 @@ public class Main {
 			for (int i = 0; i < 10000; i++)
 				res_ten_thousand += simulate(answer, Graph.regularGraph(V, r), k, l, fixed_predator, fixed_prey);
 			res_ten_thousand /= 10000;
-			
+
 			switch (answer) {
 			case 1:
-				System.out.println("Single walk results");
+				System.out.println("---Single walk---");
+				System.out.println("V = " + V + " ,r = " + r);
 				break;
 			case 2:
-				System.out.println("Multiple walk results");
+				System.out.println("---Multiple walk results---");
+				System.out.println("V = " + V + " ,r = " + r);
+				System.out.println("k = " + k);
 				break;
 			case 3:
-				System.out.println("Talkative particles results");
+				System.out.println("---Talkative particles results---");
+				System.out.println("V = " + V + " ,r = " + r);
+				System.out.println("k = " + k);
 				break;
 			case 4:
-				System.out.println("Predator-Prey results");
+				System.out.println("---Predator-Prey results---");
+				System.out.println("V = " + V + " ,r = " + r);
+				System.out.println("k = " + k + ",l = " + l);
+				System.out.println("Predators fixed: " + fixed_predator);
+				System.out.println("Prey fixed: " + fixed_prey);
 				break;
 			case 5:
-				System.out.println("Annihilating results");
+				System.out.println("---Annihilating results---");
+				System.out.println("V = " + V + " ,r = " + r);
+				System.out.println("k = " + k);
 				break;
 			case 6:
-				System.out.println("Coalescing results");
+				System.out.println("---Coalescing results---");
+				System.out.println("V = " + V + " ,r = " + r);
+				System.out.println("k = " + k);
 				break;
 			}
 			System.out.println("Predicted: " + predicted_result);
@@ -123,6 +140,7 @@ public class Main {
 			System.out.println("Hundred sim: " + res_hundred);
 			System.out.println("Thousand sim: " + res_thousand);
 			System.out.println("Ten thousand sim: " + res_ten_thousand);
+			System.out.println("---      ---");
 		}
 	}
 
@@ -191,9 +209,7 @@ public class Main {
 					break;
 			}
 
-			// if generated graph is bad
-			if (steps > predicted_result * 5)
-				return simulate(answer, Graph.regularGraph(g.V, g.r), k, l, fixed_predator, fixed_prey);
+			
 
 			steps++;
 

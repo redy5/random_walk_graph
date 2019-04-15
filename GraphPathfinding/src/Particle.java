@@ -5,6 +5,7 @@ public class Particle {
 
 	Particle(Vertex vertex) {
 		current = vertex;
+		current.guests.add(this);
 	}
 
 	void act() {
